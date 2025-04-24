@@ -27,10 +27,6 @@ public class BookMstService {
         this.bookMstRepository = bookMstRepository;
 
     }
-    
-    public BookMst selectByTitle(String title) {
-        return this.bookMstRepository.selectByTitle(title);
-    }
 
     public BookMst selectByIsbn(String isbn) {
         return this.bookMstRepository.selectByIsbn(isbn);

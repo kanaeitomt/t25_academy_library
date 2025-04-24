@@ -34,7 +34,7 @@ public class BookController {
     private final BookMstService bookMstService;
 
     @Autowired
-    public BookController(BookMstService bookMstService) {
+    public BookController(BookMstService bookMstService){
         this.bookMstService = bookMstService;
     }
 
@@ -54,22 +54,10 @@ public class BookController {
 
             boolean errTitleFlg = false;
             boolean errIsbnFlg = false;
-            BookMst titleExist = this.bookMstService.selectByTitle(bookMstDto.getTitle());
-            BookMst isbnExist = this.bookMstService.selectByIsbn(bookMstDto.getIsbn());
-
-             if (titleExist != null) {
-             result.rejectValue("title", "error.value", "登録済みの書籍です");
-             errTitleFlg = true;
-             }
 
             if (bookMstDto.getTitle().trim().isEmpty()) {
                 result.rejectValue("title", "error.value", "書籍名を入力してください");
                 errTitleFlg = true;
-            }
-
-            if (isbnExist != null) {
-                result.rejectValue("isbn", "error.value", "登録済みのISBNです");
-                errIsbnFlg = true;
             }
 
             if (bookMstDto.getIsbn().trim().isEmpty()) {
@@ -90,6 +78,14 @@ public class BookController {
             if (errTitleFlg || errIsbnFlg) {
                 throw new Exception("Book already exists.");
             }
+            
+            BookMst isbnExist = this.bookMstService.selectByIsbn(bookMstDto.getIsbn());
+
+            if (isbnExist != null) {
+                result.rejectValue("isbn", "error.value", "登録済みのISBNです");
+                errIsbnFlg = true;
+            }
+
 
             bookMstService.save(bookMstDto);
 
